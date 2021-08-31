@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import reactor.core.publisher.Sinks;
 import ru.larnerweb.memorybot.repository.AwaitingAnswerRepository;
@@ -18,7 +19,7 @@ import java.util.Set;
 public class ScheduleService {
 
 
-    private final Sinks.Many<SendMessage> responses;
+    private final Sinks.Many<BotApiMethod<?>> responses;
     private final CardRepository cardRepository;
     private final CardScheduleRepository cardScheduleRepository;
     private final AwaitingAnswerRepository awaitingAnswerRepository;

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -19,7 +20,7 @@ public class ListenerService extends TelegramLongPollingBot {
 
     private final BotConfig config;
     private final Sinks.Many<Update> updates;
-    private final Sinks.Many<SendMessage> responses;
+    private final Sinks.Many<BotApiMethod<?>> responses;
 
     @Override
     public void onUpdateReceived(Update update) {
@@ -33,8 +34,8 @@ public class ListenerService extends TelegramLongPollingBot {
                 .subscribe(this::sendResponseMessage);
     }
 
-    void sendResponseMessage(SendMessage message) {
-        log.info("Sending message to chat: {}", message.getChatId());
+    void sendResponseMessage(BotApiMethod<?> message) {
+        log.info("Sending message: '{}'", message.getMethod());
         try {
             execute(message);
         } catch (TelegramApiException e) {

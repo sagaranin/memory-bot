@@ -1,4 +1,4 @@
-package ru.larnerweb.memorybot.handler;
+package ru.larnerweb.memorybot.handler.callbacks;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
