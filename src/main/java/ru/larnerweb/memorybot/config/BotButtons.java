@@ -4,16 +4,22 @@ import org.springframework.context.annotation.Configuration;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 @Configuration
-public class Buttons {
+public class BotButtons {
 
     public static InlineKeyboardButton addCardButton = InlineKeyboardButton.builder()
             .callbackData("/ac")
             .text("➕ Добавить карту")
             .build();
 
-    public static InlineKeyboardButton settingsButton = InlineKeyboardButton.builder()
+
+    public static InlineKeyboardButton mainSettingsButton = InlineKeyboardButton.builder()
             .callbackData("/settings")
             .text("⚒ Настройки")
+            .build();
+
+    public static InlineKeyboardButton profileSettingButton = InlineKeyboardButton.builder()
+            .callbackData("/settings/profile")
+            .text("\uD83D\uDC64 Настройки профиля")
             .build();
 
     public static InlineKeyboardButton helpButton = InlineKeyboardButton.builder()
@@ -23,6 +29,6 @@ public class Buttons {
 
     public static InlineKeyboardButton homeButton = InlineKeyboardButton.builder()
             .callbackData("/start")
-            .text("Главный экран")
+            .text("\uD83C\uDFE0 Главный экран")
             .build();
 }

@@ -1,10 +1,10 @@
-package ru.larnerweb.memorybot.handler.commands;
+package ru.larnerweb.memorybot.handler.callbacks;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import reactor.core.publisher.Sinks;
@@ -18,31 +18,33 @@ import static ru.larnerweb.memorybot.config.BotButtons.*;
 @Log4j2
 @Service
 @RequiredArgsConstructor
-public class HelpCommandHandler {
+public class SettingsCallbackHandler {
 
     private final Sinks.Many<Update> updates;
     private final Sinks.Many<BotApiMethod<?>> responses;
 
     @PostConstruct
     private void listenUpdates() {
+
         updates.asFlux()
-                .filter(u -> u.getMessage() != null)
-                .filter(u -> u.getMessage().isCommand())
-                .filter(u -> u.getMessage().getText().startsWith("/help"))
+                .filter(u -> u.getCallbackQuery() != null)
+                .filter(u -> u.getCallbackQuery().getData().equals("/settings"))
                 .subscribe(update -> {
-                    SendMessage message = SendMessage.builder()
-                            .chatId(update.getMessage().getChatId().toString())
+
+                    EditMessageText message = EditMessageText.builder()
+                            .chatId(update.getCallbackQuery().getMessage().getChatId().toString())
+                            .messageId(update.getCallbackQuery().getMessage().getMessageId())
+                            .text(TextConstants.SETTINGS)
                             .replyMarkup(InlineKeyboardMarkup.builder()
                                     .keyboardRow(
-                                            List.of(addCardButton, mainSettingsButton)
-                                    ).keyboardRow(
-                                            List.of(helpButton)
+                                            List.of(homeButton)
                                     )
-                                    .build())
-                            .text(TextConstants.HELP)
-                            .build();
+                                    .build()
+                            ).build();
+
                     responses.tryEmitNext(message)
                             .orThrow();
                 });
+
     }
 }

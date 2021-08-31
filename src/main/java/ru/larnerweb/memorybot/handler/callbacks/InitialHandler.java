@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import reactor.core.publisher.Sinks;
+import ru.larnerweb.memorybot.repository.UpdateRepository;
 import ru.larnerweb.memorybot.repository.UserRepository;
 
 import javax.annotation.PostConstruct;
@@ -17,6 +18,7 @@ public class InitialHandler {
 
     private final Sinks.Many<Update> updates;
     private final UserRepository userRepository;
+    private final UpdateRepository updateRepository;
 
     @PostConstruct
     private void listenUpdates() {
@@ -33,6 +35,7 @@ public class InitialHandler {
                 User user = update.getMessage().getFrom();
                 userRepository.saveOrUpdateUser(user);
             }
+            updateRepository.saveUpdate(update);
         } catch (RuntimeException e) {
             log.error(e.getMessage(), e);
         }

@@ -13,7 +13,7 @@ import ru.larnerweb.memorybot.config.TextConstants;
 import javax.annotation.PostConstruct;
 import java.util.List;
 
-import static ru.larnerweb.memorybot.config.Buttons.*;
+import static ru.larnerweb.memorybot.config.BotButtons.*;
 
 @Log4j2
 @Service
